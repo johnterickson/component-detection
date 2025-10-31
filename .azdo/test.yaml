@@ -21,5 +21,5 @@ steps:
 - task: UseDotNet@2
   inputs:
     useGlobalJson: true
-- script: dotnet run -- scan --Verbosity Verbose --SourceDirectory . --DetectorArgs AzurePipelinesAgent=EnableIfDefaultOff
+- script: dotnet run --project ".\src\Microsoft.ComponentDetection\Microsoft.ComponentDetection.csproj" -- scan --Verbosity Verbose --SourceDirectory . --DetectorArgs AzurePipelinesAgent=EnableIfDefaultOff
   displayName: 'Run Component Detection with AzurePipelinesAgent Detector Enabled'

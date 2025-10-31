@@ -13,7 +13,13 @@ variables:
   DisableDockerDetector: 'true'
   NugetSecurityAnalysisWarningLevel: 'none'
   skipNugetSecurityAnalysis: 'true'
+  System.Debug: 'true'
+  Codeql.SkipTaskAutoInjection: 'true'
+  skipComponentGovernanceDetection: 'true'
 
 steps:
+- task: UseDotNet@2
+  inputs:
+    useGlobalJson: true
 - script: dotnet run -- scan --Verbosity Verbose --SourceDirectory . --DetectorArgs AzurePipelinesAgent=EnableIfDefaultOff
   displayName: 'Run Component Detection with AzurePipelinesAgent Detector Enabled'

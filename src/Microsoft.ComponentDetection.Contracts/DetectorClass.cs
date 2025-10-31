@@ -47,4 +47,7 @@ public enum DetectorClass
 
     /// <summary> Indicates a detector applies to Swift packages.</summary>
     Swift,
+
+    /// <summary>Indicates a detector applies to Azure Pipelines Agent.</summary>
+    AzurePipelinesAgent,
 }

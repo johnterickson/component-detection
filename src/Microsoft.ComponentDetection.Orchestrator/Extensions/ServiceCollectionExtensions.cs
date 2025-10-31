@@ -3,6 +3,7 @@ namespace Microsoft.ComponentDetection.Orchestrator.Extensions;
 using Microsoft.ComponentDetection.Common;
 using Microsoft.ComponentDetection.Common.Telemetry;
 using Microsoft.ComponentDetection.Contracts;
+using Microsoft.ComponentDetection.Detectors.AzurePipelines;
 using Microsoft.ComponentDetection.Detectors.CocoaPods;
 using Microsoft.ComponentDetection.Detectors.Conan;
 using Microsoft.ComponentDetection.Detectors.Dockerfile;
@@ -72,6 +73,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IExperimentConfiguration, UvLockDetectorExperiment>();
 
         // Detectors
+        // Azure Pipelines
+        services.AddSingleton<IComponentDetector, AzurePipelinesAgentDetector>();
+
         // CocoaPods
         services.AddSingleton<IComponentDetector, PodComponentDetector>();
 

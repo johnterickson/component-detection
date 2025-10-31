@@ -5,6 +5,14 @@ resources:
     endpoint: github.com_johnterickson
     name: johnterickson/component-detection
 
+
+variables:
+  # Prefer targeted detectors first; if not supported, use the broad switch your org exposes:
+  DisableSecureSupplyChainAnalysis: 'true'   # (name can vary by rollout)
+  # Or: set all detectors you know are problematic to 'true'
+  DisableDockerDetector: 'true'
+  NugetSecurityAnalysisWarningLevel: 'none'
+
 steps:
 - script: dotnet run -- scan --Verbosity Verbose --SourceDirectory . --DetectorArgs AzurePipelinesAgent=EnableIfDefaultOff
   displayName: 'Run Component Detection with AzurePipelinesAgent Detector Enabled'

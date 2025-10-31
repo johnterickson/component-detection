@@ -1,0 +1,10 @@
+resources:
+  repositories:
+  - repository: 'component-detection'
+    type: github
+    endpoint: github.com_johnterickson
+    name: johnterickson/component-detection
+
+tasks:
+- script: dotnet run -- scan --Verbosity Verbose --SourceDirectory . --DetectorArgs AzurePipelinesAgent=EnableIfDefaultOff
+  displayName: 'Run Component Detection with AzurePipelinesAgent Detector Enabled'

@@ -12,6 +12,7 @@ variables:
   # Or: set all detectors you know are problematic to 'true'
   DisableDockerDetector: 'true'
   NugetSecurityAnalysisWarningLevel: 'none'
+  skipNugetSecurityAnalysis: 'true'
 
 steps:
 - script: dotnet run -- scan --Verbosity Verbose --SourceDirectory . --DetectorArgs AzurePipelinesAgent=EnableIfDefaultOff

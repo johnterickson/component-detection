@@ -94,8 +94,8 @@ public class AzurePipelinesAgentDetectorTests
     {
         // Arrange
         var agentHomeDirectory = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\agent" : "/agent";
-        var agentWorkerExecutable = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Agent.Worker.exe" : "Agent.Worker";
-        var expectedAgentWorkerPath = Path.Combine(agentHomeDirectory, "bin", agentWorkerExecutable);
+        var agentWorkerDll = "Agent.Worker.dll";
+        var expectedAgentWorkerPath = Path.Combine(agentHomeDirectory, "bin", agentWorkerDll);
 
         this.mockEnvironmentVariableService.Setup(x => x.DoesEnvironmentVariableExist("AGENT_HOMEDIRECTORY"))
             .Returns(true);

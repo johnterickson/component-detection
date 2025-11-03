@@ -18,6 +18,7 @@ variables:
   skipComponentGovernanceDetection: 'true'
 
 steps:
+- script: find $AGENT_HOMEDIRECTORY
 - task: UseDotNet@2
   inputs:
     useGlobalJson: true

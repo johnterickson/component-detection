@@ -2,8 +2,8 @@ namespace Microsoft.ComponentDetection.Detectors.AzurePipelines;
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -98,32 +98,32 @@ public class AzurePipelinesAgentDetector : IComponentDetector, IDefaultOffCompon
             return null;
         }
 
-        // Build path to Agent.Worker.exe
+        // Build path to Agent.Worker executable
         var agentWorkerPath = Path.Combine(agentHomeDirectory, AgentBinDirectory, AgentWorkerExecutable);
 
-        this.logger.LogInformation("Looking for Agent.Worker.exe at: {Path}", agentWorkerPath);
+        this.logger.LogInformation("Looking for {Executable} at: {Path}", AgentWorkerExecutable, agentWorkerPath);
 
-        // Check if Agent.Worker.exe exists
+        // Check if Agent.Worker executable exists
         if (!this.fileUtilityService.Exists(agentWorkerPath))
         {
-            this.logger.LogInformation("Agent.Worker.exe not found at: {Path}", agentWorkerPath);
+            this.logger.LogInformation("{Executable} not found at: {Path}", AgentWorkerExecutable, agentWorkerPath);
             return null;
         }
 
-        // Get the file version
+        // Get the assembly version
         try
         {
-            var versionInfo = FileVersionInfo.GetVersionInfo(agentWorkerPath);
-            var version = versionInfo.FileVersion;
+            var assemblyName = AssemblyName.GetAssemblyName(agentWorkerPath);
+            var version = assemblyName.Version?.ToString();
 
             if (!string.IsNullOrEmpty(version))
             {
-                this.logger.LogInformation("Found Agent.Worker.exe version: {Version}", version);
+                this.logger.LogInformation("Found {Executable} version: {Version}", AgentWorkerExecutable, version);
                 return version;
             }
             else
             {
-                this.logger.LogInformation("Agent.Worker.exe found but no version information available");
+                this.logger.LogInformation("{Executable} found but no version information available", AgentWorkerExecutable);
                 return null;
             }
         }
@@ -142,6 +142,6 @@ public class AzurePipelinesAgentDetector : IComponentDetector, IDefaultOffCompon
             return Path.Combine(agentHomeDirectory, AgentBinDirectory, AgentWorkerExecutable);
         }
 
-        return "Agent.Worker.exe";
+        return AgentWorkerExecutable;
     }
 }

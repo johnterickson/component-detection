@@ -2,6 +2,7 @@ namespace Microsoft.ComponentDetection.Detectors.Tests;
 
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AwesomeAssertions;
 using Microsoft.ComponentDetection.Common.DependencyGraph;
@@ -92,8 +93,9 @@ public class AzurePipelinesAgentDetectorTests
     public async Task ExecuteDetectorAsync_AgentWorkerExeNotFound_ReturnsSuccessWithNoComponents()
     {
         // Arrange
-        var agentHomeDirectory = @"C:\agent";
-        var expectedAgentWorkerPath = @"C:\agent\bin\Agent.Worker.exe";
+        var agentHomeDirectory = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\agent" : "/agent";
+        var agentWorkerExecutable = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Agent.Worker.exe" : "Agent.Worker";
+        var expectedAgentWorkerPath = Path.Combine(agentHomeDirectory, "bin", agentWorkerExecutable);
 
         this.mockEnvironmentVariableService.Setup(x => x.DoesEnvironmentVariableExist("AGENT_HOMEDIRECTORY"))
             .Returns(true);

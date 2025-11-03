@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ComponentDetection.Contracts;
@@ -11,14 +12,17 @@ using Microsoft.ComponentDetection.Contracts.TypedComponent;
 using Microsoft.Extensions.Logging;
 
 /// <summary>
-/// Detector for Azure Pipelines Agent components by checking the version of Agent.Worker.exe
+/// Detector for Azure Pipelines Agent components by checking the version of Agent.Worker(.exe)
 /// in the AGENT_HOMEDIRECTORY environment variable location.
 /// </summary>
 public class AzurePipelinesAgentDetector : IComponentDetector, IDefaultOffComponentDetector
 {
     private const string AgentHomeDirectoryEnvVar = "AGENT_HOMEDIRECTORY";
-    private const string AgentWorkerExecutable = "Agent.Worker.exe";
     private const string AgentBinDirectory = "bin";
+
+    private static readonly string AgentWorkerExecutable = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+        ? "Agent.Worker.exe"
+        : "Agent.Worker";
 
     private readonly IEnvironmentVariableService environmentVariableService;
     private readonly IFileUtilityService fileUtilityService;

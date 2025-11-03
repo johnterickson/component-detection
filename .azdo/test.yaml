@@ -17,10 +17,23 @@ variables:
   Codeql.SkipTaskAutoInjection: 'true'
   skipComponentGovernanceDetection: 'true'
 
-steps:
-- script: find $AGENT_HOMEDIRECTORY
-- task: UseDotNet@2
-  inputs:
-    useGlobalJson: true
-- script: dotnet run --project ".\src\Microsoft.ComponentDetection\Microsoft.ComponentDetection.csproj" -- scan --Verbosity Verbose --SourceDirectory . --DetectorArgs AzurePipelinesAgent=EnableIfDefaultOff
-  displayName: 'Run Component Detection with AzurePipelinesAgent Detector Enabled'
+jobs:
+- job: Build
+  displayName: 'Build on $(vmImage)'
+  strategy:
+    matrix:
+      linux:
+        vmImage: 'ubuntu-latest'
+      mac:
+        vmImage: 'macos-latest'
+      windows:
+        vmImage: 'windows-latest'
+  pool:
+    vmImage: $(vmImage)
+  steps:
+  - script: find $AGENT_HOMEDIRECTORY
+  - task: UseDotNet@2
+    inputs:
+      useGlobalJson: true
+  - script: dotnet run --project ".\src\Microsoft.ComponentDetection\Microsoft.ComponentDetection.csproj" -- scan --Verbosity Verbose --SourceDirectory . --DetectorArgs AzurePipelinesAgent=EnableIfDefaultOff
+    displayName: 'Run Component Detection with AzurePipelinesAgent Detector Enabled'

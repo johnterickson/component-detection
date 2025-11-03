@@ -15,7 +15,7 @@ variables:
   skipNugetSecurityAnalysis: 'true'
   System.Debug: 'true'
   Codeql.SkipTaskAutoInjection: 'true'
-  skipComponentGovernanceDetection: 'true'
+  skipComponentGovernanceDetection: 'false'
 
 jobs:
 - job: Build

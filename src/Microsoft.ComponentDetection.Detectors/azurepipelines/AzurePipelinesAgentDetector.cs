@@ -49,7 +49,7 @@ public class AzurePipelinesAgentDetector : IComponentDetector, IDefaultOffCompon
         var componentRecorder = request.ComponentRecorder;
         var singleFileComponentRecorder = componentRecorder.CreateSingleFileComponentRecorder(this.GetDetectorFilePath());
 
-        this.logger.LogDebug("Starting Azure Pipelines Agent detection");
+        this.logger.LogInformation("Starting Azure Pipelines Agent detection");
 
         try
         {
@@ -63,7 +63,7 @@ public class AzurePipelinesAgentDetector : IComponentDetector, IDefaultOffCompon
             }
             else
             {
-                this.logger.LogDebug("Azure Pipelines Agent not detected");
+                this.logger.LogInformation("Azure Pipelines Agent not detected");
             }
         }
         catch (Exception ex)
@@ -83,26 +83,26 @@ public class AzurePipelinesAgentDetector : IComponentDetector, IDefaultOffCompon
         // Check if AGENT_HOMEDIRECTORY environment variable exists
         if (!this.environmentVariableService.DoesEnvironmentVariableExist(AgentHomeDirectoryEnvVar))
         {
-            this.logger.LogDebug("Environment variable {EnvVar} not found", AgentHomeDirectoryEnvVar);
+            this.logger.LogInformation("Environment variable {EnvVar} not found", AgentHomeDirectoryEnvVar);
             return null;
         }
 
         var agentHomeDirectory = this.environmentVariableService.GetEnvironmentVariable(AgentHomeDirectoryEnvVar);
         if (string.IsNullOrEmpty(agentHomeDirectory))
         {
-            this.logger.LogDebug("Environment variable {EnvVar} is empty", AgentHomeDirectoryEnvVar);
+            this.logger.LogInformation("Environment variable {EnvVar} is empty", AgentHomeDirectoryEnvVar);
             return null;
         }
 
         // Build path to Agent.Worker.exe
         var agentWorkerPath = Path.Combine(agentHomeDirectory, AgentBinDirectory, AgentWorkerExecutable);
 
-        this.logger.LogDebug("Looking for Agent.Worker.exe at: {Path}", agentWorkerPath);
+        this.logger.LogInformation("Looking for Agent.Worker.exe at: {Path}", agentWorkerPath);
 
         // Check if Agent.Worker.exe exists
         if (!this.fileUtilityService.Exists(agentWorkerPath))
         {
-            this.logger.LogDebug("Agent.Worker.exe not found at: {Path}", agentWorkerPath);
+            this.logger.LogInformation("Agent.Worker.exe not found at: {Path}", agentWorkerPath);
             return null;
         }
 
@@ -114,12 +114,12 @@ public class AzurePipelinesAgentDetector : IComponentDetector, IDefaultOffCompon
 
             if (!string.IsNullOrEmpty(version))
             {
-                this.logger.LogDebug("Found Agent.Worker.exe version: {Version}", version);
+                this.logger.LogInformation("Found Agent.Worker.exe version: {Version}", version);
                 return version;
             }
             else
             {
-                this.logger.LogDebug("Agent.Worker.exe found but no version information available");
+                this.logger.LogInformation("Agent.Worker.exe found but no version information available");
                 return null;
             }
         }
